@@ -51,19 +51,26 @@ def purchase_get():
         else: purchases = []
     return purchases
 
-def purchase_add():
+def purchase_add(purchase, sum):
+    purchases = purchase_get()
+    purchases.append({'purchase': purchase, 'sum': sum})
+    all_data = data_read()
+    all_data['purchases'] = purchases
+    data_save(all_data)
+
+def check_purchase():
     while True:
         answer = input('   Введите сумму покупки: ')
         if answer.isdigit(): break
     sum = int(answer)
-    global account
+    account = account_get()
     if sum <= account:
         account -= sum
+        account_set(account)
         purchase = input('   Введите описание покупки: ')
-        global purchases
-        purchases.append({'purchase': purchase, 'sum': sum})
-        #print(purchases)
+        purchase_add(purchase, sum)
     else: print ('   Недостаточно средств на счету')
+
 
 def account_add(sum):
     account = account_get()
@@ -72,6 +79,10 @@ def account_add(sum):
     all_data['account'] = account
     data_save(all_data)
 
+def account_set(account):
+    all_data = data_read()
+    all_data['account'] = account
+    data_save(all_data)
 
 def account_get():
     all_data = data_read()
@@ -98,7 +109,7 @@ def run():
             account_add(sum)
             print('   Сейчас на счету: ', account_get())
         elif choice == '2':
-            purchase_add()
+            check_purchase()
             print('   Сейчас на счету: ', account_get())
         elif choice == '3':
             purchases = purchase_get()

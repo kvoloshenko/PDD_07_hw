@@ -69,7 +69,6 @@ def test_account_add():
     file_name = 'bank_data.json'
     if os.path.exists(file_name):
         os.remove(file_name)
-    # проверка на ноль, когда нет файла
     account = 21
     purchases = []
     purchase_1 = 'покупка 1'
@@ -89,6 +88,31 @@ def test_account_add():
     assert bank.account_get() == 30
     os.remove(file_name)
 
+def test_account_set():
+    file_name = 'bank_data.json'
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    # проверка когда файла нет
+    bank.account_set(9)
+    assert bank.account_get() == 9
+
+    account = 21
+    purchases = []
+    purchase_1 = 'покупка 1'
+    sum_1 = 10
+    purchases.append({'purchase': purchase_1, 'sum': sum_1})
+    purchase_2 = 'bbb 2'
+    sum_2 = 20
+    purchases.append({'purchase': purchase_2, 'sum': sum_2})
+    all_data = {}
+    all_data['account'] = account
+    all_data['purchases'] = purchases
+    # проверка когда есть файл
+    with open(file_name, 'w', encoding='utf8') as f:
+        json.dump(all_data, f)
+    bank.account_set(9)
+    assert bank.account_get() == 9
+    os.remove(file_name)
 
 def test_data_save():
     file_name = 'bank_data.json'
