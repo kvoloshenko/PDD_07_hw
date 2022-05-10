@@ -1,8 +1,7 @@
 import os_tools.tools as f
 import os
 import shutil
-import bank.bank_data as bd
-import json
+
 
 
 # тесты для "чистых" функций
@@ -59,52 +58,6 @@ def test_info_os():
     assert len(f.info_os()) > 1
 
 
-def test_data_save():
-    file_name = 'bank_data.json'
-    all_data = {}
-    account = 21
-    purchases = []
-    purchase_1 = 'покупка 1'
-    sum_1 = 10
-    purchases.append({'purchase': purchase_1, 'sum': sum_1})
-    purchase_2 = 'bbb 2'
-    sum_2 = 20
-    purchases.append({'purchase': purchase_2, 'sum': sum_2})
-    # print(f'purchases={purchases}')
-    all_data = {}
-    all_data['account'] = account
-    all_data['purchases'] = purchases
-    bd.data_save(all_data)
-    assert os.path.exists(file_name)
-    assert os.path.isfile(file_name)
-    with open(file_name, 'r', encoding='utf8') as f:
-        loaded_all_data = json.load(f)
-        assert loaded_all_data == all_data
-        loaded_account = loaded_all_data['account']
-        assert account == loaded_account
-        # print(type(loaded_account), f' loaded_account={loaded_account}')
-        loaded_purchases = loaded_all_data['purchases']
-        # print(type(loaded_purchases), f' loaded_purchases={loaded_purchases}')
-        assert purchases == loaded_purchases
-    os.remove(file_name)
 
-def test_data_read():
-    assert bd.data_read() == {}
-    file_name = 'bank_data.json'
-    all_data = {}
-    account = 21
-    purchases = []
-    purchase_1 = 'покупка 1'
-    sum_1 = 10
-    purchases.append({'purchase': purchase_1, 'sum': sum_1})
-    purchase_2 = 'bbb 2'
-    sum_2 = 20
-    purchases.append({'purchase': purchase_2, 'sum': sum_2})
-    all_data = {}
-    all_data['account'] = account
-    all_data['purchases'] = purchases
-    with open(file_name, 'w', encoding='utf8') as f:
-        json.dump(all_data, f)
-    assert bd.data_read() == all_data
-    os.remove(file_name)
+
 

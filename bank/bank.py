@@ -1,3 +1,8 @@
+# import bank_data
+# import bank.bank_data as bank_data
+import json
+import os
+
 """
 МОДУЛЬ 3
 Программа "Личный счет"
@@ -33,7 +38,7 @@
 
 Для реализации основного меню можно использовать пример ниже или написать свой
 """
-account = 0
+#account = 0
 purchases = []
 
 def purchase_get():
@@ -70,7 +75,13 @@ def account_add():
 
 
 def account_get():
-    print('Сейчас на счету: ', account)
+    all_data = data_read()
+    if all_data == {}:
+        account = 0
+    else:  account = all_data['account']
+    #print('Сейчас на счету: ', account)
+    return account
+
 
 def run():
     while True:
@@ -82,14 +93,33 @@ def run():
         choice = input('Выберите пункт меню : ')
         if choice == '1':
             account_add()
-            account_get()
+            print('Сейчас на счету: ', account_get())
         elif choice == '2':
             purchase_add()
-            account_get()
+            print('Сейчас на счету: ', account_get())
         elif choice == '3':
             purchase_get()
-            account_get()
+            print('Сейчас на счету: ', account_get())
         elif choice == '4':
             break
         else:
             print('Неверный пункт меню')
+
+def data_save(all_data):
+    # print(f'all_data={all_data}')
+    # Сохранение в файл
+    with open('bank_data.json', 'w', encoding='utf8') as f:
+        json.dump(all_data, f)
+
+def data_read():
+    if os.path.exists('bank_data.json'):
+        with open('bank_data.json', 'r', encoding = 'utf8') as f:
+            loaded_all_data = json.load(f)
+        return loaded_all_data
+    else:
+        all_data = {}
+        return all_data
+
+if __name__ == '__main__':
+    #run()
+    print('Сейчас на счету: ', account_get())
