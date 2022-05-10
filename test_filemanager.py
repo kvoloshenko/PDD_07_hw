@@ -57,6 +57,23 @@ def test_info_dir():
 def test_info_os():
     assert len(f.info_os()) > 1
 
+def test_save_info_dir():
+    cur_dir = os.getcwd()
+    dir_name = 'test_save_dir'
+    os.mkdir(dir_name)
+    os.chdir(dir_name)
+    os.mkdir('test_dir_1')
+    os.mkdir('test_dir_2')
+    open('test_file_1', mode='a').close()
+    open('test_file_2', mode='a').close()
+    f.save_info_dir()
+    with open('listdir.txt', 'r') as file:
+        #  Прочитать сразу все данные
+        result = file.read()
+    #print(result)
+    assert result == 'files: test_file_1, test_file_2\ndirs: test_dir_1, test_dir_2\n'
+    os.chdir(cur_dir)
+    shutil.rmtree(dir_name, ignore_errors=True)
 
 
 
