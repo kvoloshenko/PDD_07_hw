@@ -2,6 +2,45 @@ import os
 import json
 import bank.bank as bank
 
+def test_purchase_get():
+    file_name = 'bank_data.json'
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    # проверка на пусто, когда нет файла
+    purchases = bank.purchase_get()
+    assert len(purchases) == 0
+    account = 21
+    purchases = []
+    purchase_1 = 'покупка 1'
+    sum_1 = 10
+    purchases.append({'purchase': purchase_1, 'sum': sum_1})
+    purchase_2 = 'bbb 2'
+    sum_2 = 20
+    purchases.append({'purchase': purchase_2, 'sum': sum_2})
+    # print(f'purchases={purchases}')
+    all_data = {}
+    all_data['account'] = account
+    all_data['purchases'] = purchases
+    # проверка на значение из файла
+    with open(file_name, 'w', encoding='utf8') as f:
+        json.dump(all_data, f)
+    assert bank.purchase_get() == purchases
+    os.remove(file_name)
+
+def test_purchase_get2():
+    file_name = 'bank_data.json'
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    account = 21
+    all_data = {}
+    all_data['account'] = account
+    # проверка когда в файле нет покупок
+    with open(file_name, 'w', encoding='utf8') as f:
+        json.dump(all_data, f)
+    purchases = bank.purchase_get()
+    assert len(purchases) == 0
+    os.remove(file_name)
+
 def test_account_get():
     file_name = 'bank_data.json'
     if os.path.exists(file_name):

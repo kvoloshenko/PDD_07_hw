@@ -39,30 +39,31 @@ import os
 Для реализации основного меню можно использовать пример ниже или написать свой
 """
 #account = 0
-purchases = []
+#purchases = []
 
 def purchase_get():
-    global purchases
-    if len(purchases) == 0:
-        print('Список покупок пуст')
+    all_data = data_read()
+    if all_data == {}:
+        purchases = []
     else:
-        print ('Список совершенных покупок:')
-        for purchase in purchases:
-            print('  ', purchase['purchase'], ' :',purchase['sum'])
+        if 'purchases' in all_data.keys():
+            purchases = all_data['purchases']
+        else: purchases = []
+    return purchases
 
 def purchase_add():
     while True:
-        answer = input('Введите сумму покупки: ')
+        answer = input('   Введите сумму покупки: ')
         if answer.isdigit(): break
     sum = int(answer)
     global account
     if sum <= account:
         account -= sum
-        purchase = input('Введите описание покупки: ')
+        purchase = input('   Введите описание покупки: ')
         global purchases
         purchases.append({'purchase': purchase, 'sum': sum})
         #print(purchases)
-    else: print ('Недостаточно средств на счету')
+    else: print ('   Недостаточно средств на счету')
 
 def account_add(sum):
     account = account_get()
@@ -95,13 +96,19 @@ def run():
                 if answer.isdigit(): break
             sum = int(answer)
             account_add(sum)
-            print('Сейчас на счету: ', account_get())
+            print('   Сейчас на счету: ', account_get())
         elif choice == '2':
             purchase_add()
-            print('Сейчас на счету: ', account_get())
+            print('   Сейчас на счету: ', account_get())
         elif choice == '3':
-            purchase_get()
-            print('Сейчас на счету: ', account_get())
+            purchases = purchase_get()
+            if len(purchases) == 0:
+                print('   Список покупок пуст')
+            else:
+                print ('   Список совершенных покупок:')
+                for purchase in purchases:
+                    print('  ', purchase['purchase'], ' :',purchase['sum'])
+            print('   Сейчас на счету: ', account_get())
         elif choice == '4':
             break
         else:
