@@ -11,6 +11,7 @@ while True:
     print('4. просмотр содержимого рабочей директории')
     print('5. посмотреть только папки')
     print('6. посмотреть только файлы')
+    print('61. сохранить содержимое рабочей директории в файл')
     print('7. просмотр информации об операционной системе')
     print('8. создатель программы')
     print('9. играть в викторину')
@@ -38,6 +39,9 @@ while True:
     elif choice == '6':
         for item in f.info_dir('files'):
             print('      ', item)
+    elif choice == '61':
+        f.save_info_dir()
+        print('      Данные успешно сохранены')
     elif choice == '7':
         print('      ', f.info_os())
     elif choice == '8':

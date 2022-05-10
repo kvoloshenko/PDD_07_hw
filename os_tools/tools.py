@@ -69,6 +69,39 @@ def info_dir(type):
 
     return items
 
+def save_info_dir():
+    dir_items = os.listdir()
+    l_dirs = ['dirs']
+    l_files = ['files']
+    for item in dir_items:
+        if os.path.isfile(item):
+            l_files.append(item)
+        elif not (os.path.isfile(item)):
+            l_dirs.append(item)
+    with open('listdir.txt', 'w') as f:
+        len_files = len(l_files)
+        #print (f'len_files={len_files}')
+        len_dirs = len(l_dirs)
+        #print(f'len_dirs={len_dirs}')
+        i=len_files
+        j=len_dirs
+        for file in l_files:
+            f.write(f'{file}')
+            if i == len_files:
+                f.write(': ')
+            elif i == 1:
+                f.write('\n')
+            else: f.write(', ')
+            i-=1
+        for dir in l_dirs:
+            f.write(f'{dir}')
+            if j == len_dirs:
+                f.write(': ')
+            elif j == 1:
+                f.write('\n')
+            else: f.write(', ')
+            j-=1
+
 
 def info_os():
     #print('      ', platform.platform())
@@ -93,4 +126,5 @@ if __name__ == '__main__':
     # del_dir()
     # copy_dir()
     # info_dir('dirs')
-    chenge_dir()
+    # chenge_dir()
+    save_info_dir()
