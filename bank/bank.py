@@ -64,14 +64,12 @@ def purchase_add():
         #print(purchases)
     else: print ('Недостаточно средств на счету')
 
-def account_add():
-    while True:
-        answer = input('Введите сумму пополнения счета: ')
-        if answer.isdigit(): break
-
-    sum = int(answer)
-    global account
+def account_add(sum):
+    account = account_get()
     account += sum
+    all_data = data_read()
+    all_data['account'] = account
+    data_save(all_data)
 
 
 def account_get():
@@ -92,7 +90,11 @@ def run():
 
         choice = input('Выберите пункт меню : ')
         if choice == '1':
-            account_add()
+            while True:
+                answer = input('Введите сумму пополнения счета: ')
+                if answer.isdigit(): break
+            sum = int(answer)
+            account_add(sum)
             print('Сейчас на счету: ', account_get())
         elif choice == '2':
             purchase_add()
@@ -121,5 +123,5 @@ def data_read():
         return all_data
 
 if __name__ == '__main__':
-    #run()
-    print('Сейчас на счету: ', account_get())
+    run()
+    #print('Сейчас на счету: ', account_get())
